@@ -5,29 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>圣诞树1</title>
     <style>
+        :root {
+            /* 基础缩放比例变量，根据屏幕宽度动态调整 */
+            --scale: 1;
+        }
+
         body {
             margin: 0;
             background: #000;
             overflow: hidden;
         }
+
         .christmas-tree {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%) scale(var(--scale));
         }
+
+        .wenzi, .wenzi2 {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            text-align: center;
+        }
+
         .wenzi {
-            position: absolute;
             top: 68%;
-            left: 50%;
-            transform: translate(-50%, -50%);
         }
+
         .wenzi2 {
-            position: absolute;
             top: 75%;
-            left: 50%;
-            transform: translate(-50%, -50%);
         }
+
         .star {
             width: 0;
             height: 0;
@@ -39,6 +50,7 @@
             position: relative;
             top: 10px;
         }
+
         .star::before {
             content: '';
             width: 0;
@@ -51,6 +63,7 @@
             border-bottom: 60px solid #ffd700;
             transform: rotate(-70deg);
         }
+
         .tree-body {
             width: 0;
             height: 0;
@@ -59,6 +72,7 @@
             border-bottom: 150px solid #00ff00;
             margin: -20px auto 0;
         }
+
         .tree-body2 {
             width: 0;
             height: 0;
@@ -67,18 +81,21 @@
             border-bottom: 120px solid #33ff33;
             margin: -120px auto 0;
         }
+
         .trunk {
             width: 30px;
             height: 60px;
             background: #8B4513;
             margin: 0 auto;
         }
+
         .snow {
             position: absolute;
             background: #fff;
             border-radius: 50%;
             animation: snowfall linear infinite;
         }
+
         @keyframes snowfall {
             0% {
                 top: -10px;
@@ -95,7 +112,31 @@
                 opacity: 0;
             }
         }
-    
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            :root {
+                --scale: 0.7; /* 平板缩放比例 */
+            }
+            .wenzi h1, .wenzi2 h1 {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            :root {
+                --scale: 0.5; /* 手机缩放比例 */
+            }
+            .wenzi h1, .wenzi2 h1 {
+                font-size: 12px;
+            }
+            .wenzi {
+                top: 65%;
+            }
+            .wenzi2 {
+                top: 72%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -107,26 +148,27 @@
             <div class="trunk"></div>
         </div>
     </a>
-        <div class="wenzi">
-            <h1 style="color: red;">千辛万苦写出来的圣诞树还不错,看得出来是树,还有雪花,屌不屌</h1>
-        </div>
-        <div class="wenzi2">
-            <h1 style="color: red;">（树可以点击哦）</h1>
-        </div>
-    
+    <div class="wenzi">
+        <h1 style="color: red;">千辛万苦写出来的圣诞树还不错,看得出来是树,还有雪花,屌不屌</h1>
+    </div>
+    <div class="wenzi2">
+        <h1 style="color: red;">（树可以点击哦）</h1>
+    </div>
 
     <script>
         // 生成飘雪效果
         function createSnow() {
             const snow = document.createElement('div');
             snow.className = 'snow';
-            // 随机大小和位置
-            const size = Math.random() * 5 + 2;
+            // 随机大小和位置（使用vw单位适配屏幕）
+            const size = Math.random() * 3 + 1;
             snow.style.width = `${size}px`;
             snow.style.height = `${size}px`;
             snow.style.left = `${Math.random() * 100}vw`;
             snow.style.top = '-10px';
-            snow.style.animationDuration = `${Math.random() * 5 + 5}s`;
+            // 根据屏幕高度调整动画时长
+            const duration = Math.random() * 5 + (window.innerHeight > 768 ? 5 : 3);
+            snow.style.animationDuration = `${duration}s`;
             snow.style.animationDelay = `${Math.random() * 5}s`;
             document.body.appendChild(snow);
             // 移除雪花
@@ -134,8 +176,9 @@
                 snow.remove();
             }, 10000);
         }
-        // 持续生成雪花
-        setInterval(createSnow, 200);
+        // 持续生成雪花（根据屏幕宽度调整生成频率）
+        const interval = window.innerWidth > 768 ? 200 : 300;
+        setInterval(createSnow, interval);
     </script>
 </body>
 </html>
