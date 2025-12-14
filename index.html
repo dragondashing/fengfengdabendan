@@ -37,6 +37,10 @@
 
         .wenzi2 {
             top: 75%;
+            /* 初始隐藏 */
+            opacity: 0;
+            /* 过渡动画，让显示更丝滑 */
+            transition: opacity 0.8s ease;
         }
 
         .star {
@@ -179,6 +183,12 @@
         // 持续生成雪花（根据屏幕宽度调整生成频率）
         const interval = window.innerWidth > 768 ? 200 : 300;
         setInterval(createSnow, interval);
+
+        // 关键修改：5秒后显示提示文字
+        setTimeout(() => {
+            const hintText = document.querySelector('.wenzi2');
+            hintText.style.opacity = '1';
+        }, 3000); // 5000毫秒 = 5秒
     </script>
 </body>
 </html>
